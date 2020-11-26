@@ -13,10 +13,10 @@ namespace AutoService.EF
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Entities : DbContext
+    public partial class AutoserviceEntities : DbContext
     {
-        public Entities()
-            : base("name=Entities")
+        public AutoserviceEntities()
+            : base("name=AutoserviceEntities")
         {
         }
     

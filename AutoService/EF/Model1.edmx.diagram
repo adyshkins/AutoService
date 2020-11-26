@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c8a9da167e21420ca816d735e67ffdf2" Name="Diagram1">
+        <EntityTypeShape EntityType="AutoserviceModel1.Client" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoserviceModel1.Gender" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoserviceModel1.Service" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoserviceModel1.Tag" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoserviceModel1.Visit" Width="1.5" PointX="5.25" PointY="1.625" IsExpanded="true" />
+        <AssociationConnector Association="AutoserviceModel1.FK_Client_Gender" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoserviceModel1.FK_Client_Tag" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoserviceModel1.FK_Visit_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoserviceModel1.FK_Visit_Service" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

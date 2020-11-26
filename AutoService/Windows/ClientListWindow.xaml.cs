@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static AutoService.EF.AppData;
+using AutoService.EF;
+using AutoService.Windows;
 
 namespace AutoService
 {
@@ -55,9 +57,24 @@ namespace AutoService
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AddClientBtn_Click(object sender, RoutedEventArgs e)
         {
-            
+            AddEditWindow addEdit = new AddEditWindow();
+            this.Hide();
+            addEdit.ShowDialog();
+            this.Show();
+        }
+
+        private void EditClientBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (listUser.SelectedItem is Client client)
+            {
+                AddEditWindow addEdit = new AddEditWindow(client);
+                this.Hide();
+                addEdit.ShowDialog();
+                this.Show();
+            }
+
         }
     }
 }
