@@ -24,22 +24,12 @@ namespace AutoService
     public partial class ClientListWindow : Window
     {
 
-        List<string> sort = new List<string>() {"Все", "фамилии", "дате последнего посещения", "количеству посещений"};
+        List<string> sort = new List<string>() { "Все", "фамилии", "дате последнего посещения", "количеству посещений" };
 
-        List<string> gender = new List<string>() {"Все","Мужской", "Женский"};
+        List<string> gender = new List<string>() { "Все", "Мужской", "Женский" };
 
-        List<string> countClient = new List<string>() {"Все","10", "50", "200"};
+        List<string> countClient = new List<string>() { "Все", "10", "50", "200" };
 
-
-
-
-        /*
-        "фамилии"
-        "дате последнего посещения"
-        "количеству посещений"
-         
-         
-         */
         public ClientListWindow()
         {
             InitializeComponent();
@@ -55,6 +45,8 @@ namespace AutoService
 
             listUser.ItemsSource = Context.Client.ToList();
 
+
+
         }
 
         private void AddClientBtn_Click(object sender, RoutedEventArgs e)
@@ -62,6 +54,7 @@ namespace AutoService
             AddEditWindow addEdit = new AddEditWindow();
             this.Hide();
             addEdit.ShowDialog();
+            listUser.ItemsSource = Context.Client.ToList();
             this.Show();
         }
 
@@ -75,6 +68,21 @@ namespace AutoService
                 this.Show();
             }
 
+        }
+
+        private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Вы уверены?", "Удаление клиента", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                if (listUser.SelectedItem is Client client)
+                {
+                    Context.Client.Remove(client);
+                    Context.SaveChanges();
+                    MessageBox.Show("Клиент удален");
+                    listUser.ItemsSource = Context.Client.ToList();
+                }
+            }
         }
     }
 }

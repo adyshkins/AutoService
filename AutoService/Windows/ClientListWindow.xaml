@@ -114,7 +114,7 @@
             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5 5 5 5" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Button x:Name="AddClientBtn" Content="Добавить" Height="30" Width="100" FontSize="16" Margin="10 0" Click="AddClientBtn_Click"/>
                 <Button x:Name="EditClientBtn" Content="Изменить" Height="30" Width="100" FontSize="16" Margin="10 0" Click="EditClientBtn_Click"/>
-                <Button Content="Удалить" Height="30" Width="100" FontSize="16" Margin="10 0"/>
+                <Button x:Name="deleteBtn" Content="Удалить" Height="30" Width="100" FontSize="16" Margin="10 0" Click="deleteBtn_Click"/>
             </StackPanel>
 
         </Grid>
