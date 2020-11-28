@@ -10,9 +10,23 @@
         Width="400"
         
         WindowStartupLocation="CenterScreen" 
-        WindowStyle="ToolWindow" 
+        WindowStyle="SingleBorderWindow"
+        Icon="/AutoService;component/Image/service_logo.ico"        
         Loaded="Window_Loaded">
     <Grid>
+        
+        <Image Height="50" 
+               Width="50"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               Margin="10"
+               Grid.RowSpan="2"
+               Source="/AutoService;component/Image/service_logo.png"/>
+
+
+        
+        
+        
         <StackPanel>
             <Border Height="100" Width="130" Margin="0 15" BorderThickness="1" BorderBrush="Gray">
                 <Image x:Name="photoUser"/>

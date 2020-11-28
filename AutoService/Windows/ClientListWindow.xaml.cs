@@ -25,9 +25,7 @@ namespace AutoService
     {
 
         List<string> sort = new List<string>() { "Все", "фамилии", "дате последнего посещения", "количеству посещений" };
-
         List<string> gender = new List<string>() { "Все", "Мужской", "Женский" };
-
         List<string> countClient = new List<string>() { "Все", "10", "50", "200" };
 
         public ClientListWindow()
@@ -44,9 +42,27 @@ namespace AutoService
             Cmb.SelectedIndex = 0;
 
             listUser.ItemsSource = Context.Client.ToList();
+        }
 
+        private void Filter()
+        {
+            var filterClientList = Context.Client.ToList();
 
-
+            if (DateOfBirthCheck.IsChecked == true)
+            {
+                listUser.ItemsSource = filterClientList
+                .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
+                .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
+                .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()))
+               .Where(i => i.BirthDate.Month == DateTime.Now.Month);
+            }
+            else if(DateOfBirthCheck.IsChecked == false)
+            {
+                listUser.ItemsSource = filterClientList
+                 .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
+                 .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
+                 .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()));
+            }
         }
 
         private void AddClientBtn_Click(object sender, RoutedEventArgs e)
@@ -83,6 +99,32 @@ namespace AutoService
                     listUser.ItemsSource = Context.Client.ToList();
                 }
             }
+        }
+
+
+        private void emailSearchTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void phoneSearchTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void nameSearchTxt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void DateOfBirthCheck_Checked(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void DateOfBirthCheck_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Filter();
         }
     }
 }

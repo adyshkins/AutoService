@@ -10,8 +10,8 @@
         Height="600" 
         Width="1000" 
         WindowStartupLocation="CenterScreen" 
-        WindowStyle="ToolWindow" 
-        
+        WindowStyle="SingleBorderWindow" 
+        Icon="/AutoService;component/Image/service_logo.ico"
         MaxHeight="700"
         MinHeight="500"
                 
@@ -29,19 +29,29 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
+        <!-- Логип -->
+
+        <Image Height="80" 
+               Width="80"
+               HorizontalAlignment="Right"
+               Margin="15 0"
+               Grid.RowSpan="2"
+               Source="/AutoService;component/Image/service_logo.png"/>
+
+
         <!--Поиск-->
         <WrapPanel VerticalAlignment="Center">
             <TextBlock Text="ФИО" Margin="15 0 0 0" Style="{StaticResource TextBlockStyle1}"/>
-            <TextBox x:Name="nameSearchTxt" Width="80" Margin="15 0 0 0" Style="{StaticResource TextBox}"/>
+            <TextBox x:Name="nameSearchTxt" Width="150" Margin="15 0 0 0" Style="{StaticResource TextBox}" TextChanged="nameSearchTxt_TextChanged"/>
 
             <TextBlock Text="Email" Margin="15 0 0 0" Style="{StaticResource TextBlockStyle1}"/>
-            <TextBox x:Name="emailSearchTxt" Width="80" Margin="15 0 0 0" Style="{StaticResource TextBox}"/>
+            <TextBox x:Name="emailSearchTxt" Width="80" Margin="15 0 0 0" Style="{StaticResource TextBox}" TextChanged="emailSearchTxt_TextChanged"/>
 
             <TextBlock Text="Телефон" Margin="15 0 0 0" Style="{StaticResource TextBlockStyle1}"/>
-            <TextBox x:Name="phoneSearchTxt" Width="80" Margin="15 0 0 0" Style="{StaticResource TextBox}"/>
+            <TextBox x:Name="phoneSearchTxt" Width="80" Margin="15 0 0 0" Style="{StaticResource TextBox}" TextChanged="phoneSearchTxt_TextChanged"/>
 
-            <CheckBox x:Name="DateOfBirthCheck" Margin="15 0" VerticalAlignment="Center">
-                <TextBlock Text="День рождения в текущем месяце" Style="{StaticResource TextBlockStyle1}"/>
+            <CheckBox x:Name="DateOfBirthCheck" Margin="15 0" VerticalAlignment="Center" Checked="DateOfBirthCheck_Checked" Unchecked="DateOfBirthCheck_Unchecked">
+                <TextBlock x:Name="DateBirthNowCH" Text="День рождения в текущем месяце" Style="{StaticResource TextBlockStyle1}"/>
             </CheckBox>
         </WrapPanel>
 
@@ -56,26 +66,16 @@
 
         </WrapPanel>
 
-        <!--  Лист  -->
-
-        
-        <!--
-        
-        
-        public System.DateTime RegDate { get; set; }
-        public Nullable<int> IdTag { get; set; }
-        
-        
-        -->
+       
         <ListView x:Name="listUser"
                   Grid.Row="2" Width="1000" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Идентификатор" DisplayMemberBinding="{Binding Id}" Width="100"/>
-                    <GridViewColumn Header="Пол" DisplayMemberBinding="{Binding Gender.Name}" Width="50"/>
-                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FirstName}" Width="100"/>
                     <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding LastName}" Width="100"/>
+                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FirstName}" Width="100"/>
                     <GridViewColumn Header="Отчество" DisplayMemberBinding="{Binding MiddleName}" Width="100"/>
+                    <GridViewColumn Header="Пол" DisplayMemberBinding="{Binding Gender.Name}" Width="50"/>
                     <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding BirthDate, StringFormat='{}{0:yyyy-MM-dd}'}" Width="70"/>
                     <GridViewColumn Header="Телефон" DisplayMemberBinding="{Binding Phone}" Width="100"/>
                     <GridViewColumn Header="Электронная почта" DisplayMemberBinding="{Binding Email}" Width="100"/>
