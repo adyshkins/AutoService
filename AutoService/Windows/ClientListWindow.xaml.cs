@@ -54,7 +54,8 @@ namespace AutoService
                 .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
                 .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
                 .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()))
-               .Where(i => i.BirthDate.Month == DateTime.Now.Month);
+                .Where(i => i.BirthDate.Month == DateTime.Now.Month);
+                //.OrderBy(i => i.LastName);
             }
             else if(DateOfBirthCheck.IsChecked == false)
             {
@@ -62,7 +63,10 @@ namespace AutoService
                  .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
                  .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
                  .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()));
+                 //.OrderBy(i => i.LastName);
             }
+
+            
         }
 
         private void AddClientBtn_Click(object sender, RoutedEventArgs e)
@@ -81,6 +85,7 @@ namespace AutoService
                 AddEditWindow addEdit = new AddEditWindow(client);
                 this.Hide();
                 addEdit.ShowDialog();
+                listUser.ItemsSource = Context.Client.ToList();
                 this.Show();
             }
 
@@ -123,6 +128,11 @@ namespace AutoService
         }
 
         private void DateOfBirthCheck_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void genderCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Filter();
         }

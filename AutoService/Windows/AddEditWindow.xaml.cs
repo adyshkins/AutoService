@@ -25,6 +25,8 @@ namespace AutoService.Windows
     {
         private bool _isEdit;
         private string pathPhoto = null;
+        Client clientEdit;
+        private bool _isChoosePhoto = false;
 
         public AddEditWindow()
         {
@@ -38,8 +40,25 @@ namespace AutoService.Windows
             InitializeComponent();
 
             _isEdit = true;
+            clientEdit = client;
 
             lastNameTxt.Text = client.LastName;
+            firstNameTxt.Text = client.FirstName;
+            middleNameTxt.Text = client.MiddleName;
+            phoneTxt.Text = client.Phone;
+            emailTxt.Text = client.Email;
+
+            using (MemoryStream stream = new MemoryStream(client.Photo))
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                bitmapImage.StreamSource = stream;
+                bitmapImage.EndInit();
+                photoUser.Source = bitmapImage;               
+            }
+
 
             if (client.GenderId == "м")
             {
@@ -69,6 +88,7 @@ namespace AutoService.Windows
         {
             if (_isEdit == false)
             {
+                // Добавление нового клиента
                 if (pathPhoto == null)
                 {
                     MessageBox.Show("нет фото");
@@ -101,6 +121,28 @@ namespace AutoService.Windows
                     MessageBox.Show(ex.ToString());
                 }
             }
+
+            else
+            {
+                // Изменение клиента
+                clientEdit.FirstName = firstNameTxt.Text;
+                clientEdit.LastName = lastNameTxt.Text;
+                clientEdit.MiddleName = middleNameTxt.Text;
+                clientEdit.Email = emailTxt.Text;
+                clientEdit.Phone = phoneTxt.Text;
+                clientEdit.BirthDate = birthDatePck.SelectedDate.Value;
+                clientEdit.GenderId = Context.Gender.Where(i => i.Name == genderCmb.Text).Select(i => i.Id).FirstOrDefault();
+
+                if (_isChoosePhoto == true)
+                {
+                    clientEdit.Photo = File.ReadAllBytes(pathPhoto);
+                }
+                
+               
+                Context.SaveChanges();
+                MessageBox.Show("Данные сохранены успешно");
+                this.Close();
+            }
         }
 
         private void choosePhotoBtn_Click(object sender, RoutedEventArgs e)
@@ -110,6 +152,7 @@ namespace AutoService.Windows
             {
                 photoUser.Source = new BitmapImage(new Uri(fileDialog.FileName));
                 pathPhoto = fileDialog.FileName;
+                _isChoosePhoto = true;
             }
         }
 

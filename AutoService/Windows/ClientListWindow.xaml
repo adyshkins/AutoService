@@ -62,7 +62,7 @@
             <ComboBox x:Name="filterCmb" Margin="15 0 0 0" />
 
             <TextBlock Text="Пол " Margin="15 0 0 0" Style="{StaticResource TextBlockStyle1}"/>
-            <ComboBox x:Name="genderCmb" Margin="15 0 0 0"/>
+            <ComboBox x:Name="genderCmb" Margin="15 0 0 0" SelectionChanged="genderCmb_SelectionChanged"/>
 
         </WrapPanel>
 
