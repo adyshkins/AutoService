@@ -8,6 +8,6 @@ namespace AutoService.EF
 {
     public class AppData
     {
-        public static AutoserviceEntities Context { get;} = new AutoserviceEntities();
+        public static AutoserviceEntities1 Context { get;} = new AutoserviceEntities1();
     }
 }

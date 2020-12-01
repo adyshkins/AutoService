@@ -31,11 +31,6 @@ namespace AutoService.EF
         public string Email { get; set; }
         public System.DateTime RegDate { get; set; }
         public Nullable<int> IdTag { get; set; }
-
-        public string FIO
-        {
-            get => $"{LastName} {FirstName} {MiddleName}";
-        }
     
         public virtual Gender Gender { get; set; }
         public virtual Tag Tag { get; set; }
