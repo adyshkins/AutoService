@@ -48,25 +48,25 @@ namespace AutoService
         {
             var filterClientList = Context.Client.ToList();
 
+            filterClientList = filterClientList
+            .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
+            .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
+            .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()));
+
             if (DateOfBirthCheck.IsChecked == true)
             {
-                listUser.ItemsSource = filterClientList
-                .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
-                .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
-                .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()))
-                .Where(i => i.BirthDate.Month == DateTime.Now.Month);
-                //.OrderBy(i => i.LastName);
-            }
-            else if(DateOfBirthCheck.IsChecked == false)
-            {
-                listUser.ItemsSource = filterClientList
-                 .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
-                 .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
-                 .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()));
-                 //.OrderBy(i => i.LastName);
+                filterClientList = filterClientList.Where(i => i.BirthDate.Month == DateTime.Now.Month);
             }
 
-            
+            /*switch (genderCmb.SelectedIndex)
+            {
+                case 1:
+                    filterClientList = filterClientList.OrderBy(...);
+                case 2:
+                    filterClientList = filterClientList.OrderBy(...);
+            }*/
+
+            listUser.ItemsSource = filterClientList;
         }
 
         private void AddClientBtn_Click(object sender, RoutedEventArgs e)
