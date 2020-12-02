@@ -33,6 +33,9 @@ namespace AutoService
 
         List<Client> pageList = new List<Client>();
 
+        string cmbValue = "Все";
+
+
         public ClientListWindow()
         {
             InitializeComponent();
@@ -46,33 +49,92 @@ namespace AutoService
             CountClientCmb.ItemsSource = countClient;
             CountClientCmb.SelectedIndex = 0;
 
-           
             listUser.ItemsSource = filterClientList;
         }
 
         private void Filter()
         {
-           
+            FilterPage();
 
             if (DateOfBirthCheck.IsChecked == true)
             {
-                listUser.ItemsSource = pageList
-                .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
-                .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
-                .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()))
+                pageList
+                .Where(i => i.Email.Contains(emailSearchTxt.Text))
+                .Where(i => i.Phone.Contains(phoneSearchTxt.Text))
+                .Where(i => i.FIO.Contains(nameSearchTxt.Text))
                 .Where(i => i.BirthDate.Month == DateTime.Now.Month);
                 //.OrderBy(i => i.LastName);
             }
-            else if(DateOfBirthCheck.IsChecked == false)
+            else if (DateOfBirthCheck.IsChecked == false)
             {
-                listUser.ItemsSource = pageList
+                pageList
                  .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
                  .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
                  .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()));
-                 //.OrderBy(i => i.LastName);
+
+                               //.OrderBy(i => i.LastName);
             }
 
-            
+            listUser.ItemsSource = pageList;
+        }
+
+        private void FilterPage()
+        {
+            int countClient; 
+           
+            pageList.Clear();
+           
+            switch (cmbValue)
+            {
+                case "Все":
+                    countClient = Context.Client.ToList().Count;
+                    break;
+
+                case "10":
+                    if (Context.Client.ToList().Count >= 10)
+                    {
+                        countClient = 10;
+                    }
+                    else
+                    {
+                        countClient = Context.Client.ToList().Count;
+                    }
+                    break;
+
+                case "50":
+                    if (Context.Client.ToList().Count >= 50)
+                    {
+                        countClient = 50;
+                    }
+                    else
+                    {
+                        countClient = Context.Client.ToList().Count;
+                    }
+                    break;
+
+                case "200":
+                    if (Context.Client.ToList().Count >= 200)
+                    {
+                        countClient = 200;
+                    }
+                    else
+                    {
+                        countClient = Context.Client.ToList().Count;
+                    }
+                    break;
+
+                default:
+                    countClient = Context.Client.ToList().Count;
+                    break;
+            }
+
+
+            for (int i = 0; i < countClient; i++)
+            {
+                pageList.Add(Context.Client.ToList()[i]);
+            }
+
+            listUser.ItemsSource = pageList;
         }
 
         private void AddClientBtn_Click(object sender, RoutedEventArgs e)
@@ -145,64 +207,8 @@ namespace AutoService
 
         private void CountClientCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string cmbValue = CountClientCmb.SelectedItem.ToString();
-            listUser.ItemsSource = filterClientList;
-            int countClient;
-            pageList.Clear();
             
-
-            switch (cmbValue)
-            {
-                case "Все":
-                    countClient = Context.Client.ToList().Count;
-                    break;
-
-                case "10":
-                    if (Context.Client.ToList().Count >= 10)
-                    { 
-                        countClient = 10;
-                    }
-                    else
-                    {
-                        countClient = Context.Client.ToList().Count;
-                    }
-                    break;
-
-                case "50":
-                    if (Context.Client.ToList().Count >= 50)
-                    {
-                        countClient = 50;
-                    }
-                    else
-                    {
-                        countClient = Context.Client.ToList().Count;
-                    }
-                    break;
-
-                case "200":
-                    if (Context.Client.ToList().Count >= 200)
-                    {
-                        countClient = 200;
-                    }
-                    else
-                    {
-                        countClient = Context.Client.ToList().Count;
-                    }
-                    break;
-
-                default:
-                    countClient = Context.Client.ToList().Count;
-                    break;
-            }
-
-            
-
-            for (int i = 0; i < countClient; i++)
-            {
-                pageList.Add(filterClientList[i]);
-            }
-
-            listUser.ItemsSource = pageList;
+            FilterPage();
         }
     }
 }
