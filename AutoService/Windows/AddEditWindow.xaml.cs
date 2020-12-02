@@ -28,6 +28,7 @@ namespace AutoService.Windows
         Client clientEdit;
         private bool _isChoosePhoto = false;
 
+        
         public AddEditWindow()
         {
             InitializeComponent();
@@ -48,6 +49,7 @@ namespace AutoService.Windows
             phoneTxt.Text = client.Phone;
             emailTxt.Text = client.Email;
 
+
             using (MemoryStream stream = new MemoryStream(client.Photo))
             {
                 BitmapImage bitmapImage = new BitmapImage();
@@ -56,8 +58,9 @@ namespace AutoService.Windows
                 bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
                 bitmapImage.StreamSource = stream;
                 bitmapImage.EndInit();
-                photoUser.Source = bitmapImage;               
+                photoUser.Source = bitmapImage;
             }
+
 
 
             if (client.GenderId == "м")

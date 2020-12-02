@@ -107,7 +107,7 @@
 
             <WrapPanel Grid.Column="0" Orientation="Horizontal" Margin="5 5 5 5" VerticalAlignment="Center" HorizontalAlignment="Left">
                 <TextBlock Text="Количество записей на странице " TextWrapping="Wrap" Margin="15 0 0 0" FontSize="13" Style="{StaticResource TextBlockStyle1}"/>
-                <ComboBox x:Name="Cmb" Margin="5 0 0 0"/>
+                <ComboBox x:Name="CountClientCmb" Margin="5 0 0 0" SelectionChanged="CountClientCmb_SelectionChanged"/>
             </WrapPanel>
 
 

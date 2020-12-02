@@ -28,6 +28,11 @@ namespace AutoService
         List<string> gender = new List<string>() { "Все", "Мужской", "Женский" };
         List<string> countClient = new List<string>() { "Все", "10", "50", "200" };
 
+        List<Client> filterClientList = Context.Client.ToList();
+
+
+        List<Client> pageList = new List<Client>();
+
         public ClientListWindow()
         {
             InitializeComponent();
@@ -38,19 +43,20 @@ namespace AutoService
             genderCmb.ItemsSource = gender;
             genderCmb.SelectedIndex = 0;
 
-            Cmb.ItemsSource = countClient;
-            Cmb.SelectedIndex = 0;
+            CountClientCmb.ItemsSource = countClient;
+            CountClientCmb.SelectedIndex = 0;
 
-            listUser.ItemsSource = Context.Client.ToList();
+           
+            listUser.ItemsSource = filterClientList;
         }
 
         private void Filter()
         {
-            var filterClientList = Context.Client.ToList();
+           
 
             if (DateOfBirthCheck.IsChecked == true)
             {
-                listUser.ItemsSource = filterClientList
+                listUser.ItemsSource = pageList
                 .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
                 .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
                 .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()))
@@ -59,7 +65,7 @@ namespace AutoService
             }
             else if(DateOfBirthCheck.IsChecked == false)
             {
-                listUser.ItemsSource = filterClientList
+                listUser.ItemsSource = pageList
                  .Where(i => i.Email.ToLower().Contains(emailSearchTxt.Text.ToLower()))
                  .Where(i => i.Phone.ToLower().Contains(phoneSearchTxt.Text.ToLower()))
                  .Where(i => i.FIO.ToLower().Contains(nameSearchTxt.Text.ToLower()));
@@ -135,6 +141,68 @@ namespace AutoService
         private void genderCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Filter();
+        }
+
+        private void CountClientCmb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string cmbValue = CountClientCmb.SelectedItem.ToString();
+            listUser.ItemsSource = filterClientList;
+            int countClient;
+            pageList.Clear();
+            
+
+            switch (cmbValue)
+            {
+                case "Все":
+                    countClient = Context.Client.ToList().Count;
+                    break;
+
+                case "10":
+                    if (Context.Client.ToList().Count >= 10)
+                    { 
+                        countClient = 10;
+                    }
+                    else
+                    {
+                        countClient = Context.Client.ToList().Count;
+                    }
+                    break;
+
+                case "50":
+                    if (Context.Client.ToList().Count >= 50)
+                    {
+                        countClient = 50;
+                    }
+                    else
+                    {
+                        countClient = Context.Client.ToList().Count;
+                    }
+                    break;
+
+                case "200":
+                    if (Context.Client.ToList().Count >= 200)
+                    {
+                        countClient = 200;
+                    }
+                    else
+                    {
+                        countClient = Context.Client.ToList().Count;
+                    }
+                    break;
+
+                default:
+                    countClient = Context.Client.ToList().Count;
+                    break;
+            }
+
+            
+
+            for (int i = 0; i < countClient; i++)
+            {
+                pageList.Add(filterClientList[i]);
+            }
+
+            listUser.ItemsSource = pageList;
         }
     }
 }
