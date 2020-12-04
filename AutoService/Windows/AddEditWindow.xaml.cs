@@ -27,8 +27,10 @@ namespace AutoService.Windows
         private string pathPhoto = null;
         Client clientEdit;
         private bool _isChoosePhoto = false;
+        int countClick = 0;
 
         
+
         public AddEditWindow()
         {
             InitializeComponent();
@@ -61,7 +63,7 @@ namespace AutoService.Windows
                 photoUser.Source = bitmapImage;
             }
 
-
+            
 
             if (client.GenderId == "м")
             {
@@ -79,8 +81,30 @@ namespace AutoService.Windows
         {
             genderCmb.ItemsSource = Context.Gender.ToList();
             genderCmb.DisplayMemberPath = "Name";
+            
+            
         }
 
+        private string StringGen()
+        {
+            string nameSymbol = string.Empty;
+
+            for (int i = 65; i < 91; i++)
+            {
+                nameSymbol += (char)i;
+            }
+            for (int i = 97; i < 123; i++)
+            {
+                nameSymbol += (char)i;
+            }
+            for (int i = 1040; i < 1104; i++)
+            {
+                nameSymbol += (char)i;
+            }
+            nameSymbol += "-";
+
+            return nameSymbol;
+        }
 
         private void closeBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -99,6 +123,12 @@ namespace AutoService.Windows
                 }
                 try
                 {
+                    if (string.IsNullOrWhiteSpace(firstNameTxt.Text))
+                    {
+                        MessageBox.Show("Поле логин не может быть пустым");
+                        return;
+                    }
+                   
                     Context.Client.Add(new Client()
                     {
                         FirstName = firstNameTxt.Text,
@@ -140,8 +170,8 @@ namespace AutoService.Windows
                 {
                     clientEdit.Photo = File.ReadAllBytes(pathPhoto);
                 }
-                
-               
+
+
                 Context.SaveChanges();
                 MessageBox.Show("Данные сохранены успешно");
                 this.Close();
@@ -150,6 +180,7 @@ namespace AutoService.Windows
 
         private void choosePhotoBtn_Click(object sender, RoutedEventArgs e)
         {
+            // диалоговое окно для выбора изобрадения пользователя
             OpenFileDialog fileDialog = new OpenFileDialog();
             if (fileDialog.ShowDialog() == true)
             {
@@ -159,6 +190,29 @@ namespace AutoService.Windows
             }
         }
 
+        private void tagBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // изменение размера окна, для работы с тегами
+            countClick++;
 
+            if (countClick % 2 == 1)
+            {
+                this.Width = 800;
+            }
+            else
+            {
+                this.Width = 400;
+            }
+        }
+
+        private void updateTagBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // Должно быть обновление Списка тегов клиента
+        }
+
+        private void lastNameTxt_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = StringGen().IndexOf(e.Text) < 0; // запрет ввода всех символов кроме StringGen()
+        }
     }
 }

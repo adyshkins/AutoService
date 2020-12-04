@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AutoService.Windows"
         mc:Ignorable="d"
         Title="Добавление / Изменение" 
-        Height="700" 
+        Height="720" 
         Width="400"
         
         WindowStartupLocation="CenterScreen" 
@@ -14,7 +14,10 @@
         Icon="/AutoService;component/Image/service_logo.ico"        
         Loaded="Window_Loaded">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="395"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Image Height="50" 
                Width="50"
                HorizontalAlignment="Right"
@@ -24,9 +27,6 @@
                Source="/AutoService;component/Image/service_logo.png"/>
 
 
-        
-        
-        
         <StackPanel>
             <Border Height="100" Width="130" Margin="0 15" BorderThickness="1" BorderBrush="Gray">
                 <Image x:Name="photoUser"/>
@@ -47,7 +47,9 @@
             
             <TextBox Width="200" 
                      x:Name="lastNameTxt"
-                     Style="{StaticResource TextBox}"/>
+                     Style="{StaticResource TextBox}"
+                     PreviewTextInput="lastNameTxt_PreviewTextInput"
+                     MaxLength="5"/>
 
             <TextBlock Text="Имя" 
                        HorizontalAlignment="Center"
@@ -122,7 +124,43 @@
                     Margin="0 10 0 0"
                     Click="closeBtn_Click"
                     />
-            
+
+            <Button x:Name="tagBtn" 
+                    Content="Теги" 
+                    Width="150"
+                    Height="20"
+                    FontSize="14"
+                    Margin="0 10 0 0"
+                    Click="tagBtn_Click"/>
+
         </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Список тегов клиента" 
+                       FontSize="20"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+
+            <DataGrid x:Name="gridTag" Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Center">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Теги" Width="2*"/>
+                    <DataGridCheckBoxColumn Header="Есть у клиента" Width="1*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button x:Name="updateTagBtn" 
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Content="Обновить"
+                    Margin="100 10"
+                    Click="updateTagBtn_Click"/>
+        </Grid>
     </Grid>
 </Window>
