@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Добавление / Изменение" 
         Height="720" 
-        Width="400"
+        Width="800"
         
         WindowStartupLocation="CenterScreen" 
         WindowStyle="SingleBorderWindow"
@@ -49,7 +49,7 @@
                      x:Name="lastNameTxt"
                      Style="{StaticResource TextBox}"
                      PreviewTextInput="lastNameTxt_PreviewTextInput"
-                     MaxLength="5"/>
+                     MaxLength="50"/>
 
             <TextBlock Text="Имя" 
                        HorizontalAlignment="Center"
@@ -58,6 +58,7 @@
 
             <TextBox Width="200" 
                      x:Name="firstNameTxt"
+                     MaxLength="50"
                      Style="{StaticResource TextBox}"/>
 
             <TextBlock Text="Отчество" 
@@ -67,6 +68,7 @@
 
             <TextBox Width="200" 
                      x:Name="middleNameTxt"
+                     MaxLength="50"
                      Style="{StaticResource TextBox}"/>
 
             <TextBlock Text="Пол" 
@@ -86,7 +88,8 @@
 
             <TextBox Width="200" 
                      x:Name="phoneTxt"
-                     Style="{StaticResource TextBox}"/>
+                     Style="{StaticResource TextBox}" PreviewTextInput="phoneTxt_PreviewTextInput"
+                     />
 
             <TextBlock Text="Дата рождения" 
                        HorizontalAlignment="Center"
@@ -105,7 +108,9 @@
             <TextBox Width="200" 
                      x:Name="emailTxt"
                      Margin="0 10 0 0"
-                     Style="{StaticResource TextBox}"/>
+                     Style="{StaticResource TextBox}" 
+                     PreviewTextInput="emailTxt_PreviewTextInput" PreviewKeyDown="emailTxt_PreviewKeyDown"
+                     />
 
             <Button x:Name="SaveBtn" 
                     Content="Сохранить" 
@@ -149,10 +154,23 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
 
-            <DataGrid x:Name="gridTag" Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Center">
+            <DataGrid x:Name="gridTag" 
+                      Grid.Row="1" 
+                      Grid.Column="1" 
+                      Margin="10" 
+                      HorizontalAlignment="Center"
+                      AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Теги" Width="2*"/>
-                    <DataGridCheckBoxColumn Header="Есть у клиента" Width="1*"/>
+                    <DataGridTemplateColumn Header="Теги клиента" Width="300">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding Path= Tag.Color}">
+                                    <TextBlock Text="{Binding Tag.Name}" Foreground="{Binding Tag.Color}"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                   
                 </DataGrid.Columns>
             </DataGrid>
             <Button x:Name="updateTagBtn" 

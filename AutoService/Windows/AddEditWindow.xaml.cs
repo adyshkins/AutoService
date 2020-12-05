@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +16,7 @@ using System.Windows.Shapes;
 using AutoService.EF;
 using Microsoft.Win32;
 using static AutoService.EF.AppData;
+using static AutoService.HelpClass.StringGen;
 
 namespace AutoService.Windows
 {
@@ -29,7 +31,7 @@ namespace AutoService.Windows
         private bool _isChoosePhoto = false;
         int countClick = 0;
 
-        
+
 
         public AddEditWindow()
         {
@@ -42,6 +44,7 @@ namespace AutoService.Windows
         {
             InitializeComponent();
 
+            this.Width = 800;
             _isEdit = true;
             clientEdit = client;
 
@@ -51,6 +54,7 @@ namespace AutoService.Windows
             phoneTxt.Text = client.Phone;
             emailTxt.Text = client.Email;
 
+            gridTag.ItemsSource = Context.Client.Where(i => i.Id == client.Id).ToList();
 
             using (MemoryStream stream = new MemoryStream(client.Photo))
             {
@@ -63,7 +67,8 @@ namespace AutoService.Windows
                 photoUser.Source = bitmapImage;
             }
 
-            
+
+
 
             if (client.GenderId == "м")
             {
@@ -81,30 +86,10 @@ namespace AutoService.Windows
         {
             genderCmb.ItemsSource = Context.Gender.ToList();
             genderCmb.DisplayMemberPath = "Name";
-            
-            
+
+
         }
-
-        private string StringGen()
-        {
-            string nameSymbol = string.Empty;
-
-            for (int i = 65; i < 91; i++)
-            {
-                nameSymbol += (char)i;
-            }
-            for (int i = 97; i < 123; i++)
-            {
-                nameSymbol += (char)i;
-            }
-            for (int i = 1040; i < 1104; i++)
-            {
-                nameSymbol += (char)i;
-            }
-            nameSymbol += "-";
-
-            return nameSymbol;
-        }
+        
 
         private void closeBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -113,22 +98,77 @@ namespace AutoService.Windows
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(lastNameTxt.Text))
+            {
+                MessageBox.Show("Поле фамилия не может быть пустым");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(firstNameTxt.Text))
+            {
+                MessageBox.Show("Поле имя  не может быть пустым");
+                return;
+            }
+
+            if (genderCmb.SelectedIndex == -1)
+            {
+                MessageBox.Show("Укажите пол");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(phoneTxt.Text))
+            {
+                MessageBox.Show("Поле телефон не может быть пустым");
+                return;
+            }
+
+            if (!birthDatePck.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Укажите дату рождения");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(emailTxt.Text))
+            {
+                MessageBox.Show("Поле электронная почта не может быть пустым");
+                return;
+            }
+
+            if (pathPhoto == null)
+            {
+                MessageBox.Show("нет фото");
+                return;
+            }
+
+            /*
+             sdfsdf @  sdfsdf.ru
+             sdfsdf . ru
+             */
+
+            string[] mail1 = emailTxt.Text.Split('@');
+
+            if (mail1.Length == 2 && mail1[0].Length > 0 && mail1[1].Length > 0)
+            {
+                string[] mail2 = mail1[1].Split('.');
+                if (mail2.Length != 2 || mail2[0].Length == 0 || mail2[1].Length == 0)
+                {
+                    MessageBox.Show("Неверный формат электронной почты");
+                    return;  
+                }
+            }
+            else
+            {
+                MessageBox.Show("Неверный формат электронной почты.");
+                return;
+            }
+
+
             if (_isEdit == false)
             {
                 // Добавление нового клиента
-                if (pathPhoto == null)
-                {
-                    MessageBox.Show("нет фото");
-                    return;
-                }
+                
                 try
                 {
-                    if (string.IsNullOrWhiteSpace(firstNameTxt.Text))
-                    {
-                        MessageBox.Show("Поле логин не может быть пустым");
-                        return;
-                    }
-                   
                     Context.Client.Add(new Client()
                     {
                         FirstName = firstNameTxt.Text,
@@ -171,7 +211,6 @@ namespace AutoService.Windows
                     clientEdit.Photo = File.ReadAllBytes(pathPhoto);
                 }
 
-
                 Context.SaveChanges();
                 MessageBox.Show("Данные сохранены успешно");
                 this.Close();
@@ -212,7 +251,25 @@ namespace AutoService.Windows
 
         private void lastNameTxt_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = StringGen().IndexOf(e.Text) < 0; // запрет ввода всех символов кроме StringGen()
+            e.Handled = StringGenName().IndexOf(e.Text) < 0; // запрет ввода всех символов кроме StringGen()
+        }
+
+        private void emailTxt_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = StringGenEmail().IndexOf(e.Text) < 0; // запрет ввода всех символов кроме StringGen()
+        }
+
+        private void emailTxt_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space) // запрет ввода пробела
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void phoneTxt_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = StringGenPhone().IndexOf(e.Text) < 0; // запрет ввода всех символов кроме StringGen()
         }
     }
 }

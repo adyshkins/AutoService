@@ -108,6 +108,7 @@
     <Compile Include="EF\Visit.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="HelpClass\StringGen.cs" />
     <Compile Include="Windows\AddEditWindow.xaml.cs">
       <DependentUpon>AddEditWindow.xaml</DependentUpon>
     </Compile>
